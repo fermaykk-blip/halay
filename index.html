@@ -69,7 +69,7 @@ const AYAR = {
   figuran: 8,             // yayın boş görünmesin diye isimsiz figüran sayısı (gerçek kişi gelince çıkarlar)
   bpm: 108,               // davul hızı (müzik dosyası kullanırsan ona göre ayarla)
   zurna: false,            // davulun üstüne telifsiz zurna ezgileri (3 ezgi sırayla çalar)
-  muzik: '',              // örn: 'halay.mp3' (bu dosyanın yanına koy). Boşsa davul sesi üretilir
+  muzik: 'muzik.mp3',     // sitedeki müzik dosyası; sürekli başa sararak çalar
 };
 /* ================================================================================ */
 
@@ -616,7 +616,7 @@ function zurnaCal(yarim) {
 function sesAc() {
   sesAcik = true;
   if (!ses) ses = new (window.AudioContext || window.webkitAudioContext)(); ses.resume();
-  if (AYAR.muzik) { if (!muzikEl) { muzikEl = new Audio(AYAR.muzik); muzikEl.loop = true; } muzikEl.play(); }
+  if (AYAR.muzik) { if (!muzikEl) { muzikEl = new Audio(AYAR.muzik); muzikEl.loop = true; } muzikEl.play().catch(() => {}); }
 }
 function sesKapat() { sesAcik = false; muzikEl?.pause(); }
 
@@ -635,6 +635,8 @@ addEventListener('keydown', e => {
 });
 
 window.uygula = uygula;
+setTimeout(() => { try { sesAc(); } catch (e) {} }, 1000);   // müzik kendiliğinden başlasın
+addEventListener('click', () => { ses?.resume(); muzikEl?.play().catch(() => {}); });
 
 for (let i = 0; i < AYAR.figuran; i++) haltaEkle(kisiOlustur({ id: 'fig' + i, ad: '', figuran: true }));
 
