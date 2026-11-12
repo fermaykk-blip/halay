@@ -68,7 +68,7 @@ const AYAR = {
   maxDansci: 40,          // halkadaki en fazla kişi
   figuran: 8,             // yayın boş görünmesin diye isimsiz figüran sayısı (gerçek kişi gelince çıkarlar)
   bpm: 108,               // davul hızı (müzik dosyası kullanırsan ona göre ayarla)
-  zurna: true,            // davulun üstüne telifsiz zurna ezgileri (3 ezgi sırayla çalar)
+  zurna: false,            // davulun üstüne telifsiz zurna ezgileri (3 ezgi sırayla çalar)
   muzik: '',              // örn: 'halay.mp3' (bu dosyanın yanına koy). Boşsa davul sesi üretilir
 };
 /* ================================================================================ */
@@ -633,8 +633,7 @@ addEventListener('keydown', e => {
   const i = TUSLAR.indexOf(t), h = AYAR.hediyeler[i];
   if (i >= 0 && h) uygula(h.aksiyon, ['gelin', 'damat', 'davul', 'zurna'].includes(h.aksiyon) || Math.random() < .4 ? testKisi() : rastgeleGercek());
 });
-addEventListener('click', () => { if (!sesAcik) sesAc(); else { ses?.resume(); muzikEl?.play(); } });
-setTimeout(() => { try { sesAc(); } catch (e) {} }, 800);   // ses kendiliğinden başlasın
+
 window.uygula = uygula;
 
 for (let i = 0; i < AYAR.figuran; i++) haltaEkle(kisiOlustur({ id: 'fig' + i, ad: '', figuran: true }));
